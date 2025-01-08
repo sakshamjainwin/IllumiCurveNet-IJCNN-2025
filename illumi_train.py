@@ -137,7 +137,7 @@ def train(config):
                     print(f"Epoch [{epoch+1}/{config.num_epochs}], Iteration [{iteration+1}], Loss: {loss.item()}")
 
                 # Save model checkpoint
-                if (iteration + 1) % config.snapshot_iter == 0:
+                if (iteration + 1) % config.checkpoint_iter == 0:
                     checkpoint_name = f"model-{loss_config['name']}-epoch{epoch}-iteration{iteration}.pth"
                     torch.save(IC_net.state_dict(), os.path.join(config.checkpoints_folder, checkpoint_name))
 
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     parser.add_argument('--val_batch_size', type=int, default=4, help='Validation batch size')
     parser.add_argument('--num_workers', type=int, default=4, help='Number of data loading workers')
     parser.add_argument('--display_iter', type=int, default=5, help='Display loss every N iterations')
-    parser.add_argument('--snapshot_iter', type=int, default=5, help='Save model every N iterations')
+    parser.add_argument('--checkpoint_iter', type=int, default=5, help='Save model every N iterations')
     parser.add_argument('--snapshots_folder', type=str, default="snapshots/", help='Directory to save best model')
     parser.add_argument('--checkpoints_folder', type=str, default="checkpoints/", help='Directory to save model checkpoints')
     parser.add_argument('--load_pretrain', type=bool, default= False, help='Whether to load pretrained model')
