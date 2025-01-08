@@ -139,7 +139,7 @@ def train(config):
                 # Save model checkpoint
                 if (iteration + 1) % config.snapshot_iter == 0:
                     checkpoint_name = f"model-{loss_config['name']}-epoch{epoch}-iteration{iteration}.pth"
-                    torch.save(DCE_net.state_dict(), os.path.join(config.snapshots_folder, checkpoint_name))
+                    torch.save(DCE_net.state_dict(), os.path.join(config.checkpoints_folder, checkpoint_name))
 
             # Calculate average epoch loss
             avg_epoch_loss = epoch_loss / num_batches
@@ -175,15 +175,18 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers', type=int, default=4, help='Number of data loading workers')
     parser.add_argument('--display_iter', type=int, default=10, help='Display loss every N iterations')
     parser.add_argument('--snapshot_iter', type=int, default=10, help='Save model every N iterations')
-    parser.add_argument('--snapshots_folder', type=str, default="snapshots/", help='Directory to save model checkpoints')
+    parser.add_argument('--snapshots_folder', type=str, default="snapshots/", help='Directory to save best model')
+    parser.add_argument('--checkpoints_folder', type=str, default="checkpoints/", help='Directory to save model checkpoints')
     parser.add_argument('--load_pretrain', type=bool, default= False, help='Whether to load pretrained model')
     parser.add_argument('--early_stopping_patience', type=int, default=10, help='Number of epochs to wait before early stopping')
     parser.add_argument('--pretrain_dir', type=str, default= "snapshots/model-best.pth")
 
     config = parser.parse_args()
 
-    # Create snapshots directory if it doesn't exist
+    # Create snapshots and checkpoints directories if they don't exist
     if not os.path.exists(config.snapshots_folder):
         os.mkdir(config.snapshots_folder)
+    if not os.path.exists(config.checkpoints_folder):
+        os.mkdir(config.checkpoints_folder)
 
     train(config)
