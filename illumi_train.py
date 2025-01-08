@@ -160,6 +160,7 @@ def train(config):
 
         print(f"Finished training with loss configuration: {loss_config['name']}")
 
+
 if __name__ == "__main__":
     # Setup command line argument parser
     parser = argparse.ArgumentParser(description='IllumiCurveNet Training Script')
