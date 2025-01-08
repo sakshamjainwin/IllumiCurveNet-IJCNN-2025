@@ -14,7 +14,7 @@ import torch.optim
 import model
 from PIL import Image
 
-def test(image_path):
+def test(image_path, config):
     """
     Process and enhance a single low-light image using the IllumiCurveNet model.
     
@@ -29,6 +29,12 @@ def test(image_path):
 
     # Load and preprocess the image
     data_lowlight = Image.open(image_path)
+
+    # Resize to dimensions divisible by 8 (to avoid dimension mismatch errors in the model's concatenations)
+    width = (data_lowlight.size[0] // 8) * 8
+    height = (data_lowlight.size[1] // 8) * 8
+    data_lowlight = data_lowlight.resize((width, height))
+
     data_lowlight = (np.asarray(data_lowlight)/255.0)  # Normalize to [0,1]
     data_lowlight = torch.from_numpy(data_lowlight).float()
     data_lowlight = data_lowlight.permute(2,0,1)  # Change to channel-first format
@@ -67,6 +73,6 @@ if __name__ == '__main__':
         for file_name in file_list:
             test_list = glob.glob(file_path+file_name+"/*") 
             for image in test_list:
-                test(image)
+                test(image, config)
         
         print("Done")
