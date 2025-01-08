@@ -80,7 +80,6 @@ def train(config):
     }
 ]
 
-
     # Loop over each loss configuration
     for loss_config in loss_configs:
         print(f"Training with loss configuration: {loss_config['name']}")
@@ -146,7 +145,6 @@ def train(config):
                 optimizer.zero_grad()
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(IC_net.parameters(), config.grad_clip_norm)
-                torch.nn.utils.clip_grad_norm_(IC_net.parameters(), max_norm=1.0)
                 optimizer.step()
 
                 epoch_loss += loss.item()
@@ -169,7 +167,7 @@ def train(config):
                 best_loss = avg_epoch_loss
                 patience_counter = 0
                 # Save best model
-                best_model_name = f"model-best.pth"
+                best_model_name = f"model-best-v1.pth"
                 torch.save(IC_net.state_dict(), os.path.join(config.snapshots_folder, best_model_name))
             else:
                 patience_counter += 1
@@ -189,7 +187,7 @@ if __name__ == "__main__":
     parser.add_argument('--lowlight_images_path', type=str, default="data/train_data/", help='Path to low-light training images')
     parser.add_argument('--lr', type=float, default=0.0001, help='Learning rate')
     parser.add_argument('--weight_decay', type=float, default=0.0001, help='Weight decay for optimizer')
-    parser.add_argument('--grad_clip_norm', type=float, default=0.1, help='Gradient clipping norm')
+    parser.add_argument('--grad_clip_norm', type=float, default=1, help='Gradient clipping norm')
     parser.add_argument('--num_epochs', type=int, default=100, help='Number of training epochs')
     parser.add_argument('--train_batch_size', type=int, default=8, help='Training batch size')
     parser.add_argument('--val_batch_size', type=int, default=4, help='Validation batch size')
