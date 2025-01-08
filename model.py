@@ -2,7 +2,7 @@
 PyTorch implementation of an Illumination Curve Network for image enhancement.
 
 The network consists of:
-- Encoder: Uses dilated convolutions to capture multi-scale features
+- Encoder: Uses dilated convolutions to capture multi-scale features and spatial attention
 - Decoder: Uses unpooling and skip connections to reconstruct enhanced image
 - Enhancement module: Applies 8 iterations of enhancement operations
 """
@@ -30,7 +30,8 @@ class illumi_curve_net(nn.Module):
     
     A neural network model for zero-shot image enhancement without pooling layers.
 	This network applies a series of convolutional layers and combines features
-	through skip connections to enhance image quality.
+	through skip connections to enhance image quality. It includes a spatial
+    attention module to focus on important image regions.
     The network takes a 3-channel image as input and outputs an enhanced version
     along with the enhancement curves used.
     """
@@ -39,12 +40,13 @@ class illumi_curve_net(nn.Module):
         """
         Initialize the network layers including convolutions and activation functions.
         The network uses 32 filters in most layers and concatenates features from
-        different levels to preserve spatial information.
+        different levels to preserve spatial information. A spatial attention module
+        is applied after initial feature extraction to highlight important regions.
         """
         super(illumi_curve_net, self).__init__()
-        self.spatial_att = spatial_attention()
-
+        
         self.relu = nn.ReLU(inplace=True)
+        self.spatial_att = spatial_attention()
         number_f = 32  # Number of feature channels
 
         # Encoder with dilated convolutions for multi-scale feature extraction
@@ -118,3 +120,4 @@ class illumi_curve_net(nn.Module):
         r = torch.cat([r1,r2,r3,r4,r5,r6,r7,r8],1)
 
         return enhanced_image,r
+    
