@@ -11,6 +11,19 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+class spatial_attention(nn.Module):
+    def __init__(self):
+        super(spatial_attention, self).__init__()
+        self.conv1 = nn.Conv2d(2, 1, kernel_size=7, padding=3)
+        self.sigmoid = nn.Sigmoid()
+    
+    def forward(self, x):
+        avg_out = torch.mean(x, dim=1, keepdim=True)
+        max_out, _ = torch.max(x, dim=1, keepdim=True)
+        x = torch.cat([avg_out, max_out], dim=1)
+        x = self.conv1(x)
+        return self.sigmoid(x)
+
 class illumi_curve_net(nn.Module):
     """
     Illumination Curve Network for image enhancement.
@@ -29,6 +42,7 @@ class illumi_curve_net(nn.Module):
         different levels to preserve spatial information.
         """
         super(illumi_curve_net, self).__init__()
+        self.spatial_att = spatial_attention()
 
         self.relu = nn.ReLU(inplace=True)
         number_f = 32  # Number of feature channels
@@ -62,6 +76,10 @@ class illumi_curve_net(nn.Module):
         """
         # Encoder path with max-pooling
         x1 = self.relu(self.e_conv1(x))
+
+        # Spatial attention module
+        x1 = x1 * self.spatial_att(x1)
+
         x1_pool, idx1 = self.maxpool(x1)
 
         x2 = self.relu(self.e_conv2(x1_pool))
