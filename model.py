@@ -5,6 +5,7 @@ The network consists of:
 - Encoder: Uses dilated convolutions to capture multi-scale features and spatial attention
 - Decoder: Uses unpooling and skip connections to reconstruct enhanced image
 - Enhancement module: Applies 8 iterations of enhancement operations
+- Adaptive gamma correction: Learns optimal gamma value for final enhancement
 """
 
 import torch
@@ -33,7 +34,9 @@ class illumi_curve_net(nn.Module):
 	through skip connections to enhance image quality. It includes a spatial
     attention module to focus on important image regions.
     The network takes a 3-channel image as input and outputs an enhanced version
-    along with the enhancement curves used.
+    along with the enhancement curves used. The final enhancement includes an
+    adaptive gamma correction with a learnable gamma parameter that automatically
+    adjusts to optimize the image contrast.
     """
     
     def __init__(self):
@@ -42,6 +45,7 @@ class illumi_curve_net(nn.Module):
         The network uses 32 filters in most layers and concatenates features from
         different levels to preserve spatial information. A spatial attention module
         is applied after initial feature extraction to highlight important regions.
+        A learnable gamma parameter is initialized for adaptive gamma correction.
         """
         super(illumi_curve_net, self).__init__()
         
@@ -74,7 +78,7 @@ class illumi_curve_net(nn.Module):
                 
         Returns:
                 tuple: Contains:
-                        - enhanced_image (torch.Tensor): The enhanced output image
+                        - enhanced_image (torch.Tensor): The enhanced output image with adaptive gamma correction
                         - r (torch.Tensor): Concatenated enhancement parameters
         """
         # Encoder path with max-pooling
@@ -120,10 +124,10 @@ class illumi_curve_net(nn.Module):
         # Ensure the pixel values are within [0,1]
         x = torch.clamp(x, 1e-7, 1.0)
 
-        # Constrain gamma to a safe range using sigmoid
+        # Constrain gamma to a safe range using sigmoid for adaptive gamma correction
         safe_gamma = 0.5 + torch.sigmoid(self.gamma)  # Range: [0.5, 1.5]
 
-        # Apply gamma correction with learnable gamma
+        # Apply adaptive gamma correction with learnable gamma parameter
         enhanced_image = torch.pow(x, safe_gamma)
 
         # Concatenate all enhancement curves
