@@ -49,11 +49,37 @@ def train(config):
     if config.load_pretrain == True:
         IC_net.load_state_dict(torch.load(config.pretrain_dir))
 
+    """
+    Explanation of Weights:
+
+    L_color (1.0): Set to a moderate weight to correct color discrepancies without dominating other losses.
+
+    L_spa (5.0): Increased weight to strongly enforce spatial consistency, crucial for maintaining sharpness and details.
+
+    L_exp_dynamic (10.0): Higher weight to adaptively enhance exposure based on input brightness, vital for varying low-light conditions.
+
+    L_TV (200.0): Kept at a high weight to effectively suppress noise and artifacts, common in low-light images.
+
+    L_contrast (5.0): Significant weight to improve visibility of details by enhancing local contrast.
+
+    L_texture (3.0): Moderate weight to ensure texture details are preserved without introducing artifacts.
+    """
+
     # Define the loss configurations with their respective weights
     loss_configs = [
-        {"name": "dynamic_exposure", 
-         "weights": {"L_color": 5.0, "L_spa": 1.5, "L_exp_dynamic": 7.0, "L_TV": 200.0, "L_contrast": 5.0, "L_exp": 3.0, "L_texture": 3.0}}
-    ]
+    {
+        "name": "low_light_enhancement",
+        "weights": {
+            "L_color": 1.0,          # Maintains color consistency
+            "L_spa": 5.0,            # Preserves spatial structure
+            "L_exp_dynamic": 10.0,   # Adjusts brightness dynamically
+            "L_TV": 200.0,           # Reduces noise, smooths image
+            "L_contrast": 5.0,       # Enhances local contrast
+            "L_texture": 3.0,        # Preserves textures
+        }
+    }
+]
+
 
     # Loop over each loss configuration
     for loss_config in loss_configs:
@@ -71,10 +97,6 @@ def train(config):
         L_exp_dynamic = losses.L_exp_dynamic()
         L_contrast = losses.L_contrast()
         L_TV = losses.L_TV()
-
-        # Set exposure value for exposure loss
-        E = 0.6
-        L_exp = losses.L_exp(16, E)
 
         # Setup optimizer
         optimizer = torch.optim.Adam(IC_net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
@@ -106,8 +128,6 @@ def train(config):
                     loss += weights["L_color"] * torch.mean(L_color(enhanced_image))
                 if "L_spa" in weights:
                     loss += weights["L_spa"] * torch.mean(L_spa(enhanced_image, img_lowlight))
-                if "L_exp" in weights:
-                    loss += weights["L_exp"] * torch.mean(L_exp(enhanced_image))
                 if "L_TV" in weights:
                     loss += weights["L_TV"] * torch.mean(L_TV(A))
                 if "L_texture" in weights:
