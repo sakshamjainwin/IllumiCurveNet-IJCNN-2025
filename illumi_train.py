@@ -155,7 +155,7 @@ def train(config):
                 patience_counter += 1
 
             if patience_counter >= patience:
-                print(f"Early stopping triggered after {epoch + 1} epochs \n")
+                print(f"Early stopping triggered after {epoch + 1} epochs")
                 break
 
         print(f"Finished training with loss configuration: {loss_config['name']}")
