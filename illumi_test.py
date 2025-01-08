@@ -7,12 +7,14 @@ This script implements a testing pipeline for our Low Light Image Enhancement mo
 import os
 import argparse
 import glob
+import shutil
 import numpy as np
 import torch
 import torchvision
 import torch.optim
 import model
 from PIL import Image
+from utils.evaluator import ImageEvaluator
 
 def test(image_path, config):
     """
@@ -76,3 +78,4 @@ if __name__ == '__main__':
                 test(image, config)
         
         print("Done")
+    
