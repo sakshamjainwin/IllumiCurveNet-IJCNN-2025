@@ -43,11 +43,11 @@ def train(config):
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
     # Initialize model to the GPU
-    DCE_net = model.illumi_curve_net().cuda()
+    IC_net = model.illumi_curve_net().cuda()
 
-    DCE_net.apply(weights_init)
+    IC_net.apply(weights_init)
     if config.load_pretrain == True:
-        DCE_net.load_state_dict(torch.load(config.pretrain_dir))
+        IC_net.load_state_dict(torch.load(config.pretrain_dir))
 
     # Define the loss configurations with their respective weights
     loss_configs = [
@@ -77,8 +77,8 @@ def train(config):
         L_exp = losses.L_exp(16, E)
 
         # Setup optimizer
-        optimizer = torch.optim.Adam(DCE_net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-        DCE_net.train()
+        optimizer = torch.optim.Adam(IC_net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+        IC_net.train()
 
         # Initialize early stopping parameters
         best_loss = float('inf')
@@ -95,7 +95,7 @@ def train(config):
                 img_lowlight = img_lowlight.cuda()
 
                 # Forward pass through the network
-                enhanced_image_1, enhanced_image, A = DCE_net(img_lowlight)
+                enhanced_image, A = IC_net(img_lowlight)
 
                 # Calculate combined loss based on configuration
                 loss = 0.0
@@ -125,8 +125,8 @@ def train(config):
                 # Optimization step
                 optimizer.zero_grad()
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(DCE_net.parameters(), config.grad_clip_norm)
-                torch.nn.utils.clip_grad_norm_(DCE_net.parameters(), max_norm=1.0)
+                torch.nn.utils.clip_grad_norm_(IC_net.parameters(), config.grad_clip_norm)
+                torch.nn.utils.clip_grad_norm_(IC_net.parameters(), max_norm=1.0)
                 optimizer.step()
 
                 epoch_loss += loss.item()
@@ -139,7 +139,7 @@ def train(config):
                 # Save model checkpoint
                 if (iteration + 1) % config.snapshot_iter == 0:
                     checkpoint_name = f"model-{loss_config['name']}-epoch{epoch}-iteration{iteration}.pth"
-                    torch.save(DCE_net.state_dict(), os.path.join(config.checkpoints_folder, checkpoint_name))
+                    torch.save(IC_net.state_dict(), os.path.join(config.checkpoints_folder, checkpoint_name))
 
             # Calculate average epoch loss
             avg_epoch_loss = epoch_loss / num_batches
@@ -150,7 +150,7 @@ def train(config):
                 patience_counter = 0
                 # Save best model
                 best_model_name = f"model-best.pth"
-                torch.save(DCE_net.state_dict(), os.path.join(config.snapshots_folder, best_model_name))
+                torch.save(IC_net.state_dict(), os.path.join(config.snapshots_folder, best_model_name))
             else:
                 patience_counter += 1
 
