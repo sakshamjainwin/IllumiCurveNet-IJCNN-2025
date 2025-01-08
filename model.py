@@ -47,6 +47,7 @@ class illumi_curve_net(nn.Module):
         
         self.relu = nn.ReLU(inplace=True)
         self.spatial_att = spatial_attention()
+        self.gamma = nn.Parameter(torch.tensor(0.8))
         number_f = 32  # Number of feature channels
 
         # Encoder with dilated convolutions for multi-scale feature extraction
@@ -114,10 +115,18 @@ class illumi_curve_net(nn.Module):
         x = x + r5*(torch.pow(x,2)-x)		
         x = x + r6*(torch.pow(x,2)-x)	
         x = x + r7*(torch.pow(x,2)-x)
-        enhanced_image = x + r8*(torch.pow(x,2)-x)
-        
-        # Concatenate all enhancement curves for visualization/analysis
-        r = torch.cat([r1,r2,r3,r4,r5,r6,r7,r8],1)
+        x = x + r8*(torch.pow(x,2)-x)
 
-        return enhanced_image,r
-    
+        # Ensure the pixel values are within [0,1]
+        x = torch.clamp(x, 1e-7, 1.0)
+
+        # Constrain gamma to a safe range using sigmoid
+        safe_gamma = 0.5 + torch.sigmoid(self.gamma)  # Range: [0.5, 1.5]
+
+        # Apply gamma correction with learnable gamma
+        enhanced_image = torch.pow(x, safe_gamma)
+
+        # Concatenate all enhancement curves
+        r = torch.cat([r1, r2, r3, r4, r5, r6, r7, r8], dim=1)
+
+        return enhanced_image, r    
