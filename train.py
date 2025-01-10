@@ -54,7 +54,7 @@ def train(config):
 
     L_color (5.0): Set to a moderate weight to correct color discrepancies without dominating other losses.
 
-    L_spa (1.5): Increased weight to strongly enforce spatial consistency, crucial for maintaining sharpness and details.
+    L_spa (1.5): Set higher weight to strongly enforce spatial consistency, crucial for maintaining sharpness and details.
 
     L_exp (10.0): Higher weight to adaptively enhance exposure based on input brightness, vital for varying low-light conditions.
 
