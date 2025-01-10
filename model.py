@@ -115,9 +115,9 @@ class illumi_curve_net(nn.Module):
         x = x + r1*(torch.pow(x,2)-x)
         x = x + r2*(torch.pow(x,2)-x)
         x = x + r3*(torch.pow(x,2)-x)
-        x = x + r4*(torch.pow(x,2)-x)		
-        x = x + r5*(torch.pow(x,2)-x)		
-        x = x + r6*(torch.pow(x,2)-x)	
+        x = x + r4*(torch.pow(x,2)-x)	
+        x = x + r5*(torch.pow(x,2)-x)	
+        x = x + r6*(torch.pow(x,2)-x)
         x = x + r7*(torch.pow(x,2)-x)
         x = x + r8*(torch.pow(x,2)-x)
 
