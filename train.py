@@ -93,7 +93,7 @@ def train(config):
         L_color = losses.L_color()
         L_spa = losses.L_spa()
         L_texture = losses.L_texture()
-        L_exp = losses.L_exp()
+        L_exp = losses.L_exp(patch_size=16, mean_val=0.6)
         L_contrast = losses.L_contrast()
         L_TV = losses.L_TV()
 
