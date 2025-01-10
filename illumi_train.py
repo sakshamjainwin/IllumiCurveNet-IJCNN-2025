@@ -70,9 +70,9 @@ def train(config):
     {
         "name": "low_light_enhancement",
         "weights": {
-            "L_color": 1.0,          # Maintains color consistency
-            "L_spa": 5.0,            # Preserves spatial structure
-            "L_exp_dynamic": 10.0,   # Adjusts brightness dynamically
+            "L_color": 5.0,          # Maintains color consistency
+            "L_spa": 1.5,            # Preserves spatial structure
+            "L_exp": 10.0,           # Enhances overall exposure
             "L_TV": 200.0,           # Reduces noise, smooths image
             "L_contrast": 5.0,       # Enhances local contrast
             "L_texture": 3.0,        # Preserves textures
