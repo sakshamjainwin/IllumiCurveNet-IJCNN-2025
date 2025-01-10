@@ -52,11 +52,11 @@ def train(config):
     """
     Explanation of Weights:
 
-    L_color (1.0): Set to a moderate weight to correct color discrepancies without dominating other losses.
+    L_color (5.0): Set to a moderate weight to correct color discrepancies without dominating other losses.
 
-    L_spa (5.0): Increased weight to strongly enforce spatial consistency, crucial for maintaining sharpness and details.
+    L_spa (1.5): Increased weight to strongly enforce spatial consistency, crucial for maintaining sharpness and details.
 
-    L_exp_dynamic (10.0): Higher weight to adaptively enhance exposure based on input brightness, vital for varying low-light conditions.
+    L_exp (10.0): Higher weight to adaptively enhance exposure based on input brightness, vital for varying low-light conditions.
 
     L_TV (200.0): Kept at a high weight to effectively suppress noise and artifacts, common in low-light images.
 
@@ -93,7 +93,7 @@ def train(config):
         L_color = losses.L_color()
         L_spa = losses.L_spa()
         L_texture = losses.L_texture()
-        L_exp_dynamic = losses.L_exp_dynamic()
+        L_exp = losses.L_exp()
         L_contrast = losses.L_contrast()
         L_TV = losses.L_TV()
 
@@ -131,8 +131,8 @@ def train(config):
                     loss += weights["L_TV"] * torch.mean(L_TV(A))
                 if "L_texture" in weights:
                     loss += weights["L_texture"] * torch.mean(L_texture(img_lowlight, enhanced_image))
-                if "L_exp_dynamic" in weights:
-                    loss += weights["L_exp_dynamic"] * torch.mean(L_exp_dynamic(enhanced_image, img_lowlight))
+                if "L_exp" in weights:
+                    loss += weights["L_exp"] * torch.mean(L_exp(enhanced_image, img_lowlight))
                 if "L_contrast" in weights:
                     loss += weights["L_contrast"] * torch.mean(L_contrast(enhanced_image))
 
