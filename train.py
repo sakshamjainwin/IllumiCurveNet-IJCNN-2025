@@ -132,7 +132,7 @@ def train(config):
                 if "L_texture" in weights:
                     loss += weights["L_texture"] * torch.mean(L_texture(img_lowlight, enhanced_image))
                 if "L_exp" in weights:
-                    loss += weights["L_exp"] * torch.mean(L_exp(enhanced_image, img_lowlight))
+                    loss += weights["L_exp"] * torch.mean(L_exp(enhanced_image))
                 if "L_contrast" in weights:
                     loss += weights["L_contrast"] * torch.mean(L_contrast(enhanced_image))
 
