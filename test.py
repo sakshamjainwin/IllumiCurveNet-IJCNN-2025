@@ -14,7 +14,6 @@ import torchvision
 import torch.optim
 import model
 from PIL import Image
-from utils.evaluator import ImageEvaluator
 
 def test(image_path, config):
     """
