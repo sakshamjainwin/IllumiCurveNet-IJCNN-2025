@@ -42,7 +42,7 @@ def test(image_path, config):
 
     # Initialize and load the model
     IC_net = model.illumi_curve_net().cuda()
-    IC_net.load_state_dict(torch.load(config.pretrain_dir))
+    IC_net.load_state_dict(torch.load(config.pretrain_snapshot))
 
     # Generate enhanced image
     enhanced_image,_ = IC_net(data_lowlight)
