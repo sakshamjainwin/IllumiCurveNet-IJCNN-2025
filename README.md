@@ -53,8 +53,8 @@ IllumiCurveNet combines a multi-scale encoder-decoder architecture with a spatia
    **Note:** If you encounter issues with CUDA compatibility, you may need to install the appropriate version of [PyTorch](https://pytorch.org/) for your system.
 
 ## Dataset Preparation
-1. **Download the dataset:**
-   Download the dataset from [here](https://www.kaggle.com/datasets/sakshamgupta11/lunar-permanently-shadowed-regions-dataset).
+1. **Download the training dataset:**
+   [Link](https://www.kaggle.com/datasets/ashishprajapati1306/illumicurvenet-training-data/) to the training dataset.
 2. **Organize the dataset:**
    Organize the dataset into the following structure:
    ```
