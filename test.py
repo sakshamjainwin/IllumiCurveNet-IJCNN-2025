@@ -7,7 +7,6 @@ This script implements a testing pipeline for our Low Light Image Enhancement mo
 import os
 import argparse
 import glob
-import shutil
 import numpy as np
 import torch
 import torchvision
