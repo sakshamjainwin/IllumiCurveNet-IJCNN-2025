@@ -198,7 +198,7 @@ if __name__ == "__main__":
     parser.add_argument('--checkpoints_folder', type=str, default="checkpoints/", help='Directory to save model checkpoints')
     parser.add_argument('--load_pretrain', type=bool, default= False, help='Whether to load pretrained model')
     parser.add_argument('--early_stopping_patience', type=int, default=10, help='Number of epochs to wait before early stopping')
-    parser.add_argument('--pretrain_dir', type=str, default= "snapshots/model-best.pth")
+    parser.add_argument('--pretrain_snapshot', type=str, default= "snapshots/model-best.pth", help='Pretrained model snapshot')
 
     config = parser.parse_args()
 

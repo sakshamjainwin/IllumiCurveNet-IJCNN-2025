@@ -61,7 +61,7 @@ if __name__ == '__main__':
     
     # Define command line arguments
     parser.add_argument('--lowlight_images_path', type=str, default="data/test_data/", help='Path to low-light testing images')
-    parser.add_argument('--pretrain_dir', type=str, default= "snapshots/model-best.pth", help='Path to pretrained model weights')
+    parser.add_argument('--pretrain_snapshot', type=str, default= "snapshots/model-best.pth", help='Pretrained model snapshot')
 
     config = parser.parse_args()
 
