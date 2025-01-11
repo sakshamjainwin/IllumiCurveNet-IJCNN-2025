@@ -77,7 +77,7 @@ python train.py
 ```
 **Training Arguments:**
 - `--lowlight_images_path`: Path to the directory containing low-light training images.
-- `--pretrain_dir`: Path to the directory containing pretrained model checkpoint.
+- `--pretrain_snapshot`: Pretrained model snapshot.
 - `--train_batch_size`: Batch size for training.
 
 **For Example:** To train the model with a batch size of 8 and a pretrained model checkpoint, run:
