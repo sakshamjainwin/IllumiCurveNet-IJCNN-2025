@@ -115,4 +115,4 @@ Here is a [sample result](metrics.ipynb) from the test dataset.
 - `utils/losses.py`: Loss functions for model training.
 - `snapshots/`: Directory to save the best model checkpoint.
 - `test.py`: Script to test the trained model on low-light images.
-- `data/resultt/`: Directory where enhanced images are saved.
+- `data/result/`: Directory where enhanced images are saved.
