@@ -47,7 +47,7 @@ def train(config):
 
     IC_net.apply(weights_init)
     if config.load_pretrain == True:
-        IC_net.load_state_dict(torch.load(config.pretrain_dir))
+        IC_net.load_state_dict(torch.load(config.pretrain_snapshot))
 
     """
     Explanation of Weights:
