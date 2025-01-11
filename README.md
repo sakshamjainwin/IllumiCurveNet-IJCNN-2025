@@ -105,7 +105,8 @@ The following table shows the performance of IllumiCurveNet on the test dataset 
 | BRISQUE↓ | 56.87 | 45.58 | 46.42 | 54.91 | 43.16 | 43.11 | **36.55** |
 
 **Qualitative Results:**
-Here is a [sample result](metrics.ipynb) from the test dataset. 
+![Model Comparisions](diagrams/model-comparisions.png)
+<p align="center"><i>Figure: Overview of different models on the PSR Images.</i></p>
 
 ## Code Structure
 - `model.py`: Contains the implementation of the IllumiCurveNet architecture.
