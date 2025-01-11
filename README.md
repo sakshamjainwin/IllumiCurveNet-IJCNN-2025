@@ -82,7 +82,7 @@ python train.py
 
 **For Example:** To train the model with a batch size of 8 and a pretrained model checkpoint, run:
 ```bash
-python train.py --lowlight_images_path data/train_data --pretrain_dir snapshots/model-best.pth --train_batch_size 8
+python train.py --lowlight_images_path data/train_data --pretrain_snapshot snapshots/model-best.pth --train_batch_size 8
 ```
 ## Testing
 To test the model on the train dataset, run the following command:
@@ -91,7 +91,7 @@ python test.py
 ```
 **Testing Arguments:**
 - `--lowlight_images_path`: Path to the directory having folders containing low-light test images.
-- `--pretrain_dir`: Path to the directory containing pretrained model checkpoint.
+- `--pretrain_snapshot`: Pretrained model snapshot.
 
 The enhanced images will be saved in the `result` directory, mirroring the structure of `test_data/`.
 
