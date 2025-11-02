@@ -15,6 +15,14 @@
 ## Introduction
 Lunar exploration is hindered by the extreme low-light conditions found in Permanently Shadowed Regions (PSRs). Traditional low-light image enhancement techniques struggle with the unique challenges presented by the lunar environment, such as high noise levels and lack of illumination. **IllumiCurveNet** addresses these challenges by introducing a novel self-guided loss framework and an illumination curve network optimized with an attention mechanism and adaptive gamma correction for enhancing lunar PSR images.
 
+## Citation and Paper
+This work has been **accepted for publication at [IJCNN 2025](https://www.ijcnn.org/)**  
+> **IllumiCurveNet: Low-Light Image Enhancement for Lunar Permanently Shadowed Regions Using a Self-Guided Loss Framework**  
+> [Saksham Jain](https://github.com/sakshamjainwin), *et al.*  
+> _Accepted, to appear in the Proceedings of the International Joint Conference on Neural Networks (IJCNN) 2025._
+
+📄 **Paper:** [https://confcats-event-sessions.s3.amazonaws.com/ijcnn25/papers/2823.pdf](#)
+
 ## Architecture
 IllumiCurveNet combines a multi-scale encoder-decoder architecture with a spatial attention mechanism and an adaptive gamma correction component. The network learns to enhance low-light images through iterative application of learnable enhancement curves and leverages multiple loss functions tailored for this task.
 
